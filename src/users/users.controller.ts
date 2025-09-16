@@ -11,7 +11,7 @@ export class UserController {
     const users = this.service.getUsers();
     res.status(200).json({
       message: "success",
-      resaults: users.length,
+      results: users.length,
       data: users,
     });
   };

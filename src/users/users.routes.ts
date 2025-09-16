@@ -8,8 +8,7 @@ import {
 const router = Router();
 const userController = new UserController();
 
-router.get("/", userController.getUsers);
-router.get("/:id", userController.getUser);
+router.get("/", requireAuth, userController.getUsers);
 
 router.get("/me", requireAuth, userController.getMe);
 router.put("/me", requireAuth, userController.updateMe);
@@ -20,7 +19,8 @@ router.post(
   userController.createCoach
 );
 
-router.post("/", userController.createUser);
+router.post("/", requireAuth, userController.createUser);
+router.get("/:id", userController.getUser);
 router.patch("/:id", userController.updateUser);
 router.delete("/:id", userController.deleteUser);
 

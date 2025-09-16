@@ -15,6 +15,9 @@ npm install
 # Start dev server
 npm run dev
 
+# Run tests
+npm run test
+
 # Build for production
 npm run build
 npm start
@@ -62,10 +65,10 @@ src/
 ### Courses
 
 - `POST /courses` → Create a new course (COACH/ADMIN only, supports image upload)
-    - Form-data:
-        - `title: string`
-        - `description: string`
-        - `image: file`
+  - Form-data:
+    - `title: string`
+    - `description: string`
+    - `image: file`
 - `GET /courses` → List all courses
 - `GET /courses/:id` → Get course by id
 - `PATCH /courses/:id` → Update a course (creator or ADMIN only)
