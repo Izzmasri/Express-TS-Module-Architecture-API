@@ -109,6 +109,13 @@ export class CourseController {
 
     try {
       const { title, description } = req.body;
+
+      if (!title || !description) {
+        return res.status(HttpErrorStatus.BadRequest).json({
+          message: "Title and description are required fields",
+        });
+      }
+
       const image = req.file
         ? `../shared/uploads/${req.file.filename}`
         : undefined;
