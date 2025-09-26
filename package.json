@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^6.16.2",
     "argon2": "^0.44.0",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
@@ -32,9 +33,13 @@
     "@types/uuid": "^10.0.0",
     "jest": "^30.1.3",
     "nodemon": "^3.1.10",
+    "prisma": "^6.16.2",
     "supertest": "^7.1.4",
     "ts-jest": "^29.4.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
+  },
+  "prisma": {
+    "seed": "ts-node src/shared/seeds/prismaSeed.ts"
   }
 }

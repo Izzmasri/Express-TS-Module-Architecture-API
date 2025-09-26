@@ -75,8 +75,8 @@ import { AuthRequest } from "../shared/utils/auth.request";
 export class CourseController {
   private service = new CourseService();
 
-  getCourses = (req: Request, res: Response) => {
-    const courses = this.service.getCourses();
+  getCourses = async (req: Request, res: Response) => {
+    const courses = await this.service.getCourses();
     res.status(200).json({
       message: "success",
       results: courses.length,
@@ -84,14 +84,14 @@ export class CourseController {
     });
   };
 
-  getCourse = (req: Request<{ id: string }>, res: Response) => {
+  getCourse = async (req: Request<{ id: string }>, res: Response) => {
     const id = req.params.id;
     if (!id)
       return res
         .status(HttpErrorStatus.BadRequest)
         .json({ error: "ID required" });
 
-    const course = this.service.getCourse(id);
+    const course = await this.service.getCourse(id);
     if (!course)
       return res
         .status(HttpErrorStatus.NotFound)
@@ -100,7 +100,7 @@ export class CourseController {
     res.status(200).json({ message: "success", data: course });
   };
 
-  createCourse = (req: AuthRequest, res: Response) => {
+  createCourse = async (req: AuthRequest, res: Response) => {
     if (!req.user) {
       return res
         .status(HttpErrorStatus.Unauthorized)
@@ -116,18 +116,16 @@ export class CourseController {
         });
       }
 
-      const image = req.file
-        ? `../shared/uploads/${req.file.filename}`
-        : undefined;
+      const image = req.file ? `../shared/uploads/${req.file.filename}` : null;
 
-      const course = this.service.createCourse(title, description, image);
+      const course = await this.service.createCourse(title, description, image);
       res.status(201).json({ message: "success", data: course });
     } catch (error) {
       res.status(500).json({ message: "Error creating course", error });
     }
   };
 
-  updateCourse = (req: AuthRequest, res: Response) => {
+  updateCourse = async (req: AuthRequest, res: Response) => {
     if (!req.user) {
       return res
         .status(HttpErrorStatus.Unauthorized)
@@ -140,7 +138,7 @@ export class CourseController {
         .status(HttpErrorStatus.BadRequest)
         .json({ error: "ID required" });
 
-    const course = this.service.getCourse(id);
+    const course = await this.service.getCourse(id);
     if (!course)
       return res
         .status(HttpErrorStatus.NotFound)
@@ -157,12 +155,17 @@ export class CourseController {
     const image = req.file
       ? `./shared/uploads/${req.file.filename}`
       : req.body.image;
-    const updated = this.service.updateCourse(id, title, description, image);
+    const updated = await this.service.updateCourse(
+      id,
+      title,
+      description,
+      image
+    );
 
     res.status(200).json({ message: "success", data: updated });
   };
 
-  deleteCourse = (req: AuthRequest, res: Response) => {
+  deleteCourse = async (req: AuthRequest, res: Response) => {
     if (!req.user) {
       return res
         .status(HttpErrorStatus.Unauthorized)
@@ -175,7 +178,7 @@ export class CourseController {
         .status(HttpErrorStatus.BadRequest)
         .json({ error: "ID required" });
 
-    const course = this.service.getCourse(id);
+    const course = await this.service.getCourse(id);
     if (!course)
       return res
         .status(HttpErrorStatus.NotFound)
