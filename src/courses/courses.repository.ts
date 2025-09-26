@@ -1,33 +1,28 @@
-import { BaseRepository } from "../shared/utils/base.repository";
-import { Course } from "./courses.entity";
-import { v4 as uuid } from "uuid";
+// import { BaseRepository } from "../shared/utils/base.repository";
+// import { courseData } from "./courses.data";
+// import { Course } from "./courses.entity";
 
-const courses: Course[] = [
-  {
-    id: uuid(),
-    title: "Introduction to Web Development",
-    description:
-      "Learn the basics of HTML, CSS, and JavaScript to build your first web pages.",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: uuid(),
-    title: "Data Structures & Algorithms",
-    description:
-      "Master core data structures and algorithms to improve problem-solving and coding skills.",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: uuid(),
-    title: "Machine Learning Fundamentals",
-    description:
-      "Understand the principles of machine learning and build your first predictive models.",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-];
+// type CreateCoursePayload = Omit<Course, "id" | "createdAt" | "updatedAt">;
+// type UpdateCoursePayload = Partial<Omit<Course, "id" | "createdAt">>;
+
+// export class CourseRepository extends BaseRepository<
+//   Course,
+//   CreateCoursePayload,
+//   UpdateCoursePayload
+// > {
+//   constructor() {
+//     super(courseData);
+//   }
+// }
+
+// ---------------------------------
+
+// using prisma
+
+import { PrismaClient, Course } from "../generated/prisma";
+import { BaseRepository } from "../shared/utils/base.repository";
+
+const prisma = new PrismaClient();
 
 type CreateCoursePayload = Omit<Course, "id" | "createdAt" | "updatedAt">;
 type UpdateCoursePayload = Partial<Omit<Course, "id" | "createdAt">>;
@@ -38,6 +33,6 @@ export class CourseRepository extends BaseRepository<
   UpdateCoursePayload
 > {
   constructor() {
-    super(courses);
+    super(prisma.course, prisma);
   }
 }
