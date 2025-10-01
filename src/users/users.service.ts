@@ -4,11 +4,11 @@ import { User } from "./users.entity";
 export class UserService {
   private repository = new UserRepository();
 
-  getUsers(): User[] {
+  getUsers(): Promise<User[]> {
     return this.repository.findAll();
   }
 
-  getUser(id: string): User | undefined {
+  getUser(id: string): Promise<User | null> {
     return this.repository.findById(id);
   }
 
@@ -17,8 +17,14 @@ export class UserService {
     email: string,
     password: string,
     role: "ADMIN" | "COACH" | "STUDENT" = "STUDENT"
-  ): User {
-    return this.repository.create({ name, email, password, role });
+  ): Promise<User> {
+    return this.repository.create({
+      name,
+      email,
+      password,
+      role,
+      course: [],
+    });
   }
 
   updateUser(
@@ -26,7 +32,7 @@ export class UserService {
     name?: string,
     email?: string,
     role?: "ADMIN" | "COACH" | "STUDENT"
-  ): User | null {
+  ): Promise<User | null> {
     const updates: Partial<Omit<User, "id" | "createdAt">> = {};
 
     if (name !== undefined) updates.name = name;
@@ -36,7 +42,7 @@ export class UserService {
     return this.repository.update(id, updates);
   }
 
-  deleteUser(id: string): boolean {
+  deleteUser(id: string): Promise<boolean> {
     return this.repository.delete(id);
   }
 }
