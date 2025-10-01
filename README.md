@@ -2,11 +2,25 @@
 
 A simple API with **Users, Authentication, and Courses** modules.
 
-Built with **Express + TypeScript**, using layered architecture.
+Built with **Express + TypeScript**, using layered architecture, and **MongoDB with Mongoose** for database operations.
 
 ---
 
-## 🚀 Setup
+## 🔑 Environment Setup
+
+Before you start, you need to set up your environment variables.
+
+1.  Copy the example environment file:
+    ```bash
+    cp .env.example .env
+    ```
+2.  Open the `.env` file and replace the placeholder values with your actual database credentials and a secure JWT secret.
+    ```
+    MongoDB_URL="mongodb+srv://USER:PASSWORD@......"
+    JWT_SECRET="your_super_secret_key_that_is_long_and_random"
+    ```
+
+## � Setup
 
 ```bash
 # Install dependencies
@@ -21,6 +35,9 @@ npm run test
 # Build for production
 npm run build
 npm start
+
+# Run the seeder script
+npx ts-node src/mongoose.seed.ts
 ```
 
 ---

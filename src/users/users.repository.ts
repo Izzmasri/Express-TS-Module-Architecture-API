@@ -1,7 +1,7 @@
 // src/users/users.repository.ts
 import { User } from "./users.entity";
 import { BaseRepository } from "../shared/utils/base.repository";
-import { userData } from "./users.data";
+import { UserModel } from "./users.model";
 
 type CreateUserPayload = Omit<User, "id" | "createdAt" | "updatedAt">;
 type UpdateUserPayload = Partial<Omit<User, "id" | "createdAt">>;
@@ -12,12 +12,10 @@ export class UserRepository extends BaseRepository<
   UpdateUserPayload
 > {
   constructor() {
-    super(userData);
+    super(UserModel);
   }
 
-  findByEmail(email: string): User | undefined {
-    return this.findAll().find(
-      (u) => u.email.toLowerCase() === email.toLowerCase()
-    );
+  async findByEmail(email: string): Promise<User | null> {
+    return this.model.findOne({ email: email.toLowerCase() });
   }
 }

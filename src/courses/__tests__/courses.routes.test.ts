@@ -1,8 +1,28 @@
+import "dotenv/config";
+import mongoose from "mongoose";
 import {
   autherdTestAgentWithRole,
   unAuthedTestAgent,
 } from "../../shared/tests/helper/supertest.helper";
 import { courseData } from "../courses.data";
+
+beforeAll(async () => {
+  await mongoose.connect(process.env.MongoDB_URL!);
+  console.log("✅ Connected to MongoDB for testing");
+});
+
+afterAll(async () => {
+  await mongoose.disconnect();
+  console.log("🔌 Disconnected from MongoDB after tests");
+});
+
+afterEach(async () => {
+  // clear collections to isolate tests
+  const collections = mongoose.connection.collections;
+  for (const key in collections) {
+    await collections[key]!.deleteMany({});
+  }
+});
 
 describe("courses routes endpoint", () => {
   describe("GET /api/v1/courses/:id", () => {

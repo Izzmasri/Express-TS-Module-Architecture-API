@@ -4,16 +4,20 @@ import { Course } from "./courses.entity";
 export class CourseService {
   private repository = new CourseRepository();
 
-  getCourses(): Course[] {
+  getCourses(): Promise<Course[]> {
     return this.repository.findAll();
   }
 
-  getCourse(id: string): Course | undefined {
+  getCourse(id: string): Promise<Course | null> {
     return this.repository.findById(id);
   }
 
-  createCourse(title: string, description: string, image?: string): Course {
-    return this.repository.create({ title, description, image });
+  createCourse(
+    title: string,
+    description: string,
+    image?: string
+  ): Promise<Course> {
+    return this.repository.create({ title, description, image, students: [] });
   }
 
   updateCourse(
@@ -21,7 +25,7 @@ export class CourseService {
     title?: string,
     description?: string,
     image?: string
-  ): Course | null {
+  ): Promise<Course | null> {
     const updates: Partial<Omit<Course, "id" | "createdAt">> = {};
 
     if (title !== undefined) updates.title = title;
@@ -31,7 +35,7 @@ export class CourseService {
     return this.repository.update(id, updates);
   }
 
-  deleteCourse(id: string): boolean {
+  deleteCourse(id: string): Promise<boolean> {
     return this.repository.delete(id);
   }
 }
